@@ -1,0 +1,14 @@
+require 'rubygems'
+require 'webee'
+
+WeBee::Api.user = 'admin'
+WeBee::Api.password = 'xabiquo'
+WeBee::Api.url = "http://localhost/api"
+
+remote_services= WeBee::RemoteService.create_for_host("<%= node[:ipaddress] %>")
+dc = WeBee::Datacenter.create :name => 'Datacenter1',
+                         :remote_services => remote_services
+
+rack = dc.add_rack :name => 'rack01',
+                   :ha_enabled => false
+

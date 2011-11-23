@@ -1,0 +1,8 @@
+{
+  "name": "Abiquo Repo",
+  "gpgcheck": "1",
+  "gpgkey": "file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Abiquo",
+  "id": "config",
+  "enabled": "1",
+  "baseurl": "http://mirror.abiquo.com/abiquo/1.8.5/os/x86_64"
+}

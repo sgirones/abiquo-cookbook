@@ -1,0 +1,8 @@
+{
+  "name": "Abiquo EE Repo",
+  "gpgcheck": "1",
+  "gpgkey": "file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Abiquo",
+  "id": "config",
+  "enabled": "1",
+  "baseurl": "http://mirror.bcn.abiquo.com/releases/1.8.5/packages"
+}
