@@ -21,6 +21,11 @@ include_recipe "abiquo::base"
   end
 end
 
+cookbook_file "/etc/init.d/abiquo-tomcat" do
+  source "abiquo-tomcat"
+  mode '0755'
+end
+
 service 'abiquo-tomcat' do
   action :enable
 end
@@ -35,6 +40,3 @@ ruby_block "Write config file" do
   end
 end
 
-service 'abiquo-tomcat' do
-  action :start
-end

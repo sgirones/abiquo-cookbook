@@ -1,6 +1,6 @@
 name "abiquo-remote-services"
 description "The base role for an Abiquo Remote Services host"
-run_list "recipe[abiquo::remote-services]", "role[abiquo-host]"
+run_list "role[abiquo-host]", "recipe[abiquo::remote-services]"
 
 override_attributes(
   :abiquo => {

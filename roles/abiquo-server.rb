@@ -1,6 +1,6 @@
 name "abiquo-server"
 description "The base role for an Abiquo Server host"
-run_list "recipe[abiquo::server]","role[abiquo-host]"
+run_list "role[abiquo-host]", "recipe[abiquo::server]"
 override_attributes(
   :abiquo => {
     :properties => {

@@ -13,19 +13,8 @@
 # limitations under the License.
 #
 
-include_recipe "abiquo::base"
-
-%w{java-1.6.0-openjdk-devel abiquo-v2v ntp which redis lsof}.each do |p|
-  package p do
-    action :install
-  end
-end
-
-cookbook_file "/etc/init.d/abiquo-tomcat" do
-  source "abiquo-tomcat"
-  mode '0755'
-end
-
 service 'abiquo-tomcat' do
-  action [:enable]
+  action :start
+  not_if 'pgrep -f abiquo/tomcat'
 end
+

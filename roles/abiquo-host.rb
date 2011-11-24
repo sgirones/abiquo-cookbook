@@ -4,7 +4,7 @@ run_list "recipe[selinux::disabled]"
 override_attributes(
   "repo" => {
     "abiquo-ee" => {
-      "url" => "http://mirror.bcn.abiquo.com/releases/1.8.0/installer/packages",
+      "url" => "http://mirror.bcn.abiquo.com/1.8-rolling/",
       "key" => "RPM-GPG-KEY-Abiquo"
     },
     "abiquo" => {

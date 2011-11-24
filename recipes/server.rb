@@ -21,7 +21,7 @@ include_recipe "abiquo::base"
   end
 end
 
-%w{make gcc ruby-devel libxml2-devel libxslt-devel}.each do |p|
+%w{make libstdc++ gcc ruby-devel libxml2-devel libxslt-devel}.each do |p|
   yum_package p do
     action :install
     arch 'x86_64'
@@ -32,11 +32,16 @@ gem_package 'webee' do
   action :install
 end
 
+cookbook_file "/etc/init.d/abiquo-tomcat" do
+  source "abiquo-tomcat"
+  mode '0755'
+end
+
 service 'abiquo-tomcat' do
   action :enable
 end
 
-%w(mysqld rabbitmq-server redis).each do |srv|
+%w(mysqld rabbitmq-server).each do |srv|
   service srv do
     action [:enable, :start]
   end
@@ -51,10 +56,6 @@ end
 execute 'create db schema' do
   command 'mysql < /usr/share/doc/abiquo-server/database/kinton-schema.sql'
   not_if "mysql -e 'show databases'|grep kinton"
-end
-
-service 'abiquo-tomcat' do
-  action :start
 end
 
 template "/root/bootstrap.rb" do
