@@ -16,3 +16,11 @@
 execute 'reboot the server' do
   command 'reboot'
 end
+
+ruby_block "remove_reboot_recipe" do
+  block do
+    Chef::Log.info("Abiquo bootstrap complete, removing the destructive recipe[abiquo::reboot]")
+    node.run_list.remove("recipe[abiquo::reboot]") if node.run_list.include?("recipe[abiquo::reboot]")
+  end
+  action :nothing
+end
