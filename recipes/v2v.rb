@@ -15,6 +15,10 @@
 
 include_recipe "abiquo::base"
 
+local_repo_path = node['abiquo']['properties']['v2v']['abiquo.appliancemanager.localRepositoryPath']
+nfs_url = node['abiquo']['properties']['v2v']['abiquo.appliancemanager.repositoryLocation']
+
+
 %w{java-1.6.0-openjdk-devel abiquo-v2v ntp which redis lsof}.each do |p|
   package p do
     action :install
@@ -30,24 +34,31 @@ service 'abiquo-tomcat' do
   action [:enable]
 end
 
-local_repo_path = node['abiquo']['properties']['v2v']['abiquo.appliancemanager.localRepositoryPath']
-nfs_url = node['abiquo']['properties']['v2v']['abiquo.appliancemanager.repositoryLocation']
 mount "#{local_repo_path}" do
-  action [:mount, :enable]
+
+  action :mount
   device "#{nfs_url}"
   fstype 'nfs'
   options 'rw'
+
   not_if do
     File.exist?("#{local_repo_path}/.abiquo_repository") \
       or node.run_list.include?("recipe[abiquo::nfs-repository]")
   end
+
 end
 
-ruby_block "Add nfs repository to fstab" do
+ruby_block "Configure NFS service" do
+
   block do
     File.open('/etc/fstab', 'a') do |f|
+      Chef::Log.info "Adding #{nfs_url} to fstab"
       f.puts "#{nfs_url} #{local_repo_path} nfs defaults 0 0"
     end
   end
-  not_if "grep #{nfs_url} /etc/fstab"
+
+  not_if do
+    (not open('/etc/fstab').grep(/#{Regexp.escape("127.0.0.1:/optt/vm_repository")}/).empty?) or node.run_list.include?("recipe[abiquo::nfs-repository]") 
+  end
+
 end
