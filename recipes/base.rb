@@ -51,6 +51,10 @@ service 'ntpd' do
   action [:enable, :start]
 end
 
+service 'portmap' do
+  action :start
+end
+
 service 'iptables' do
   action [:disable, :stop]
 end

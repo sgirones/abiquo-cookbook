@@ -29,3 +29,25 @@ end
 service 'abiquo-tomcat' do
   action [:enable]
 end
+
+local_repo_path = node['abiquo']['properties']['v2v']['abiquo.appliancemanager.localRepositoryPath']
+nfs_url = node['abiquo']['properties']['v2v']['abiquo.appliancemanager.repositoryLocation']
+mount "#{local_repo_path}" do
+  action [:mount, :enable]
+  device "#{nfs_url}"
+  fstype 'nfs'
+  options 'rw'
+  not_if do
+    File.exist?("#{local_repo_path}/.abiquo_repository") \
+      or node.run_list.include?("recipe[abiquo::nfs-repository]")
+  end
+end
+
+ruby_block "Add nfs repository to fstab" do
+  block do
+    File.open('/etc/fstab', 'a') do |f|
+      f.puts "#{nfs_url} #{local_repo_path} nfs defaults 0 0"
+    end
+  end
+  not_if "grep #{nfs_url} /etc/fstab"
+end
