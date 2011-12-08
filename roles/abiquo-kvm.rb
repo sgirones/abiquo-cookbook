@@ -1,6 +1,6 @@
 name "abiquo-kvm"
 description "The role for an Abiquo KVM cloud node"
-run_list "role[abiquo-host]", "recipe[abiquo::kvm]"
+run_list "recipe[abiquo::kvm]"
 
 override_attributes(
   "abiquo" => {

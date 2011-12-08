@@ -43,7 +43,8 @@ mount "#{local_repo_path}" do
 
   not_if do
     File.exist?("#{local_repo_path}/.abiquo_repository") \
-      or node.run_list.include?("recipe[abiquo::nfs-repository]")
+      or node.run_list.include?("recipe[abiquo::nfs-repository]") \
+      or nfs_url =~ /127\.0\.0\.1/
   end
 
 end
@@ -58,7 +59,14 @@ ruby_block "Configure NFS service" do
   end
 
   not_if do
-    (not open('/etc/fstab').grep(/#{Regexp.escape("127.0.0.1:/optt/vm_repository")}/).empty?) or node.run_list.include?("recipe[abiquo::nfs-repository]") 
+    done = false
+    if node.run_list.include?("recipe[abiquo::nfs-repository]") or \
+      !open('/etc/fstab').grep(/#{Regexp.escape(nfs_url)}/).empty? or \
+      nfs_url =~ /127\.0\.0\.1/
+      done = true
+      Chef::Log.info "We don't need to add the NFS mount to fstab"
+    end
+    done
   end
 
 end

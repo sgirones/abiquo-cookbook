@@ -1,6 +1,6 @@
 name "abiquo-xen"
 description "The role for an Abiquo Xen cloud node"
-run_list "role[abiquo-host]", "recipe[abiquo::xen]"
+run_list "recipe[abiquo::xen]"
 
 override_attributes(
   "abiquo" => {
