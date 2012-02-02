@@ -34,6 +34,10 @@ service 'abiquo-tomcat' do
   action :enable
 end
 
+service 'dhcpd' do
+  action [:enable, :start]
+end
+
 service 'redis' do
   action [:enable, :start]
 end

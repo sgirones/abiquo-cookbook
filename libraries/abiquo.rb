@@ -5,7 +5,7 @@ module Abiquo
     @@base_dir = '/opt/abiquo'
 
     def self.rs_installed?
-      File.directory? "#{@@base_dir}/tomcat/webapps/virtualfactory"
+      File.directory? "#{@@base_dir}/tomcat/webapps/vsm"
     end
 
     def self.server_installed?
