@@ -23,5 +23,7 @@ end
 execute 'restart the AIM server' do
   Chef::Log.info "Restarting Abiquo AIM"
   command 'service abiquo-aim restart'
+  ## buggy AIM init script
+  returns 3
 end
 
