@@ -27,6 +27,14 @@ template '/etc/abiquo-aim.ini' do
   source 'abiquo-aim.ini.erb'
 end
 
+template '/etc/libvirt/libvirtd.conf' do
+  source 'libvirtd.conf.erb'
+end
+
+template '/etc/sysconfig/libvirtd' do
+  source 'libvirtd.sysconfig.erb'
+end
+
 service 'abiquo-aim' do
   action :enable
 end
