@@ -17,7 +17,7 @@ include_recipe "abiquo::base"
 local_repo_path = node['abiquo']['aim']['local_repo_path']
 nfs_url = node['abiquo']['aim']['nfs_url']
 
-%w(abiquo-aim kvm kvm-kmod).each do |p|
+%w(abiquo-aim vconfig bridge-utils kvm kvm-kmod).each do |p|
   package p do
     action :install
   end
