@@ -15,7 +15,7 @@
 
 include_recipe "abiquo::base"
 
-%w(abiquo-lvmiscsi jdk).each do |p|
+%w(abiquo-lvmiscsi java-1.6.0-openjdk-devel).each do |p|
   package p do
     action :install
   end
