@@ -4,13 +4,12 @@
 port = 8889
 
 [monitor]
-uri = "<%= node[:abiquo][:aim][:qemu_uri] %>"
-redisHost = <%= node[:abiquo][:aim][:redis_host] %>
+uri = "<%= node['abiquo']['aim']['qemu_uri'] %>"
+redisHost = <%= node['abiquo']['aim']['redis_host'] %>
 redisPort = 6379
 
 [rimp]
 repository = /opt/vm_repository
-datastore = /var/lib/virt
 
 [vlan]
 ifconfigCmd = /sbin/ifconfig

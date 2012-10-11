@@ -27,13 +27,6 @@ cookbook_file "/etc/pki/rpm-gpg/RPM-GPG-KEY-Abiquo" do
   source "RPM-GPG-KEY-Abiquo"
 end
 
-yum_repository "abiquo-ee" do
-  description "Abiquo EE Repository"
-  key node["repo"]["abiquo-ee"]["key"] 
-  url node["repo"]["abiquo-ee"]["url"] 
-  action :add
-end
-
 yum_repository "abiquo" do
   description "Abiquo Repository"
   key node["repo"]["abiquo"]["key"] 

@@ -13,7 +13,7 @@
 # limitations under the License.
 #
 
-include_recipe "abiquo::base"
+include_recipe "abiquo-cookbook::base"
 local_repo_path = node['abiquo']['aim']['local_repo_path']
 nfs_url = node['abiquo']['aim']['nfs_url']
 
@@ -21,6 +21,18 @@ nfs_url = node['abiquo']['aim']['nfs_url']
   package p do
     action :install
   end
+end
+
+file '/etc/abiquo-aim.ini' do
+  action :delete
+end
+
+file '/etc/libvirt/libvirtd.conf' do
+  action :delete
+end
+
+file '/etc/sysconfig/libvirtd' do
+  action :delete
 end
 
 template '/etc/abiquo-aim.ini' do
@@ -52,20 +64,6 @@ directory local_repo_path do
   group "root"
   mode "0755"
   action :create
-end
-
-mount "#{local_repo_path}" do
-
-  action :mount
-  device "#{nfs_url}"
-  fstype 'nfs'
-  options 'rw'
-
-  not_if do
-    File.exist?("#{local_repo_path}/.abiquo_repository") \
-      or nfs_url =~ /127\.0\.0\.1/
-  end
-
 end
 
 ruby_block "Configure NFS service" do
