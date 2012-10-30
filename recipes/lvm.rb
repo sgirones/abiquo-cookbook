@@ -13,7 +13,7 @@
 # limitations under the License.
 #
 
-include_recipe "abiquo::base"
+include_recipe "abiquo-cookbook::base"
 
 %w(abiquo-lvmiscsi java-1.6.0-openjdk-devel).each do |p|
   package p do

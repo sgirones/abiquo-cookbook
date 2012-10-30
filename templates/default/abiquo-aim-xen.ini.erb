@@ -4,7 +4,7 @@
 port = 8889
 
 [monitor]
-uri = "<%= node['abiquo']['aim']['qemu_uri'] %>"
+uri = "xen+unix:///"
 redisHost = <%= node['abiquo']['aim']['redis_host'] %>
 redisPort = 6379
 

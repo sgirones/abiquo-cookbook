@@ -36,7 +36,7 @@ file '/etc/sysconfig/libvirtd' do
 end
 
 template '/etc/abiquo-aim.ini' do
-  source 'abiquo-aim.ini.erb'
+  source 'abiquo-aim-kvm.ini.erb'
 end
 
 template '/etc/libvirt/libvirtd.conf' do
@@ -69,20 +69,28 @@ end
 ruby_block "Configure NFS service" do
 
   block do
+    data = File.read '/etc/fstab'
     File.open('/etc/fstab', 'a') do |f|
       Chef::Log.info "Adding #{nfs_url} to fstab"
       f.puts "#{nfs_url} #{local_repo_path} nfs defaults 0 0"
-    end
+    end if not data.include? nfs_url
+    Chef::Log.info `/bin/mount #{local_repo_path} 2>&1`
   end
-
-  not_if do
-    done = false
-    if !open('/etc/fstab').grep(/#{Regexp.escape(nfs_url)}/).empty? or \
-      nfs_url =~ /127\.0\.0\.1/
-        done = true
-        Chef::Log.info "We don't need to add the NFS mount to fstab"
-    end
-    done
-  end
-
 end
+
+#mount "#{local_repo_path}" do
+#    action :mount
+#    device "#{nfs_url}"
+#    fstype 'nfs'
+#    options 'rw'
+
+#    not_if do
+#        done = false
+#            if !open('/etc/fstab').grep(/#{Regexp.escape(nfs_url)}/).empty? or \
+#                nfs_url =~ /nfs-IP/
+#                done = true
+#                Chef::Log.info "NFS will not be mounted because no ip is specified"
+#            end
+#        done
+#    end
+#end
