@@ -1,0 +1,17 @@
+# AIM configuration file
+
+[server]
+port = 8889
+
+[monitor]
+uri = "qemu+unix:///system"
+redisHost = <%= node['abiquo']['aim']['redis_host'] %>
+redisPort = 6379
+
+[rimp]
+repository = /opt/vm_repository
+
+[vlan]
+ifconfigCmd = /sbin/ifconfig
+vconfigCmd = /sbin/vconfig
+brctlCmd = /usr/sbin/brctl
